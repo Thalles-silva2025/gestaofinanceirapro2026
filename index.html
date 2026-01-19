@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestão Financeira PRO - Cópia Visual</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- React Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide-react@0.292.0/dist/umd/lucide-react.js"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                navy: '#0f172a',
+                blue: '#1e40af',
+                green: '#15803d',
+                light: '#f8fafc',
+                accent: '#eab308'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      html { scroll-behavior: smooth; }
+      .sticky-cta {
+        box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-900 antialiased">
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useRef, useEffect } = React;
+      
+      // --- ÍCONES (Fallback de Segurança) ---
+      // Tenta pegar do window.lucideReact, se falhar, cria componentes vazios para não quebrar a página
+      const Icons = window.lucideReact || {};
+      const { 
+        Menu = () => <span>Menu</span>, 
+        X = () => <span>X</span>, 
+        CheckCircle = () => <span>✔</span>, 
+        AlertTriangle = () => <span>!</span>, 
+        ArrowRight = () => <span>-></span>, 
+        BarChart3 = () => <span>📊</span>, 
+        PieChart = () => <span>🥧</span>, 
+        TrendingUp = () => <span>📈</span>, 
+        DollarSign = () => <span>$</span>, 
+        Clock = () => <span>🕒</span>, 
+        Users = () => <span>👥</span>, 
+        ShieldCheck = () => <span>🛡</span>, 
+        Upload = () => <span>⬆</span>, 
+        ImageIcon = () => <span>🖼</span>, 
+        User = () => <span>👤</span>, 
+        Briefcase = () => <span>💼</span>, 
+        Activity = () => <span>⚡</span>, 
+        HeartCrack = () => <span>💔</span>, 
+        Play = () => <span>▶</span> 
+      } = Icons;
+
+      // --- DADOS ---
+      const CLUSTERS = [
+        {
+          name: "Sobrevivente Caótico",
+          range: "R$ 50k – 150k",
+          description: "Precisa separar PF/PJ, implantar ERP básico e ajustar precificação para ver a cor do dinheiro."
+        },
+        {
+          name: "Crescimento Desordenado",
+          range: "R$ 150k – 600k",
+          description: "Volume de transações explodiu. Precisa de fluxo projetado, gestão de compras/estoque (Curva ABC) e delegação com controle."
+        },
+        {
+          name: "Estagnado Complexo",
+          range: "R$ 600k – 2M",
+          description: "Já tem equipe, mas falta inteligência. Precisa de DRE gerencial, governança, orçamento matricial e KPIs confiáveis."
+        }
+      ];
+
+      const MODULES = [
+        {
+          id: "A",
+          title: "Módulo A: Estruturação (Semanas 1-4)",
+          weeks: [
+            { week: 1, title: "Diagnóstico e Mentalidade", objective: "Quebrar a inércia e separar contas.", deliverable: "Inventário de dívidas e custos.", practice: "Separação total PF/PJ e definição de pró-labore." },
+            { week: 2, title: "Setup do ERP Gerencial", objective: "Configurar o sistema para gerar dados.", deliverable: "Plano de contas gerencial.", practice: "Parametrização correta para relatórios automáticos." },
+            { week: 3, title: "Taxonomia de Produtos", objective: "Preparar a base para gestão de estoque.", deliverable: "Grupos e famílias padronizados.", practice: "Limpeza da base de cadastro." },
+            { week: 4, title: "Precificação Estratégica", objective: "Garantir lucro na venda.", deliverable: "Regras de precificação e margem.", practice: "Cálculo de Markup vs Margem." }
+          ]
+        },
+        {
+          id: "B",
+          title: "Módulo B: Controle (Semanas 5-8)",
+          weeks: [
+            { week: 5, title: "Contas a Pagar/Receber", objective: "Blindar o caixa.", deliverable: "Régua de cobrança.", practice: "Agendamento e provisionamento." },
+            { week: 6, title: "Gestão de Compras", objective: "Transformar compras em lucro.", deliverable: "Fluxo de cotação e aprovação.", practice: "Definição de alçadas e PMP." },
+            { week: 7, title: "Recebimento e Conferência", objective: "Integridade físico x sistema.", deliverable: "Protocolo de confronto cego.", practice: "Processo de devolução." },
+            { week: 8, title: "Conciliação Bancária", objective: "A verdade dos números.", deliverable: "Fechamento de caixa diário.", practice: "Bater banco x ERP centavo por centavo." }
+          ]
+        },
+        {
+          id: "C",
+          title: "Módulo C: Acompanhamento (Semanas 9-12)",
+          weeks: [
+            { week: 9, title: "Fluxo de Caixa 13 Semanas", objective: "Previsibilidade.", deliverable: "Visão de Fluxo Projetado.", practice: "Implementação da visão curto prazo." },
+            { week: 10, title: "Go Live + Rotinas", objective: "Virada operacional.", deliverable: "Checklist de rotinas.", practice: "Equipe rodando processos sozinhos." },
+            { week: 11, title: "Previsto x Realizado", objective: "Identificar gargalos.", deliverable: "Relatório de desvios.", practice: "Investigação de causa raiz." },
+            { week: 12, title: "Rolling Forecast", objective: "Correção de rota.", deliverable: "Plano de ação.", practice: "Atualização semanal das projeções." }
+          ]
+        },
+        {
+          id: "D",
+          title: "Módulo D: Estoque e Relatórios (Semanas 13-16)",
+          weeks: [
+            { week: 13, title: "Gestão de Estoque", objective: "Otimização capital de giro.", deliverable: "Curva ABC e Giro.", practice: "Identificação de estoque obsoleto." },
+            { week: 14, title: "DRE Gerencial", objective: "'Minha empresa dá lucro?'", deliverable: "DRE estruturado.", practice: "Análise vertical e horizontal." },
+            { week: 15, title: "DRE vs Fluxo de Caixa", objective: "Efeito Tesoura.", deliverable: "Diagnóstico Lucro x Caixa.", practice: "Análise de Capital de Giro." },
+            { week: 16, title: "Governança e KPIs", objective: "Gestão estratégica.", deliverable: "Painel de Indicadores.", practice: "Reunião Mensal de Resultados." }
+          ]
+        }
+      ];
+
+      const FAQS = [
+        { question: "Não tenho tempo para assistir aulas.", answer: "O foco não são aulas teóricas, é implementação. Nos encontros configuramos o sistema. A meta é você gastar 30min por semana olhando relatórios, não 10h apagando incêndio." },
+        { question: "Vou ver com meu contador.", answer: "O contador foca no fiscal (passado). Nós focamos no gerencial (futuro). Arrumamos a casa para o contador ser mais estratégico." },
+        { question: "Já tentei usar ERP e não funcionou.", answer: "Falha de processo, não de software. Nós configuramos a ferramenta para o seu modelo de negócio." },
+        { question: "Preciso trocar de ERP?", answer: "Provavelmente não. Ajustamos o que você tem (Tiny, Conta Azul, Omie, Bling)." },
+        { question: "Minha empresa é de serviços ou comércio. Serve?", answer: "Sim. Temos trilhas específicas para Comércio (foco em estoque) e Serviços (foco em precificação/hora)." },
+        { question: "O que preciso para começar?", answer: "Acesso ao sistema atual e vontade de abrir a 'caixa preta'. Não precisa saber finanças." }
+      ];
+
+      const CHECKLIST_ITEMS = [
+        "Você consegue prever o caixa para daqui a 13 semanas?",
+        "O DRE sai pronto do sistema ou precisa montar no Excel?",
+        "Suas contas PF e PJ são 100% separadas?",
+        "Você sabe exatamente a margem de contribuição de cada produto?",
+        "Você concilia o banco centavo por centavo diariamente?",
+        "Existe um processo de compras formal com cotação e alçadas?",
+        "Você sabe o valor do seu estoque parado hoje (Curva ABC)?",
+        "Você tem um Pró-labore definido e não faz retiradas aleatórias?",
+        "Seu financeiro roda sem você precisar aprovar tudo?",
+        "Você toma decisões baseadas em relatórios ou no saldo do banco?"
+      ];
+
+      const FEEDBACKS = [
+        {
+          id: 1,
+          name: "Rodrigo Marinho",
+          role: "Sócio",
+          company: "Bella Isa Moda Íntima",
+          youtubeId: "w1my9VQpXd8", 
+          quote: "Existem duas Bella Isa, uma antes e outra depois do Hub Business."
+        },
+        {
+          id: 2,
+          name: "Juliano",
+          role: "Empresário",
+          company: "Aluno Hub Business",
+          youtubeId: "boy2EpuKOSQ", 
+          quote: "Aprendi a ser gestor no Hub Business, eu achava que sabia ser empresário."
+        },
+        {
+          id: 3,
+          name: "Dr. Igor Marra",
+          role: "Sócio Proprietário",
+          company: "Clínica Marra",
+          youtubeId: "AzpGRZWTpiI", 
+          quote: "Mudou o patamar de tomada de decisão do nosso negócio."
+        }
+      ];
+
+      // --- COMPONENTES ---
+
+      const Button = ({ children, variant = 'primary', className = '', onClick }) => {
+        const baseStyle = "inline-flex items-center justify-center font-bold transition-all duration-200 rounded-lg px-8 py-4 text-lg cursor-pointer";
+        const variants = {
+          primary: "bg-brand-green hover:bg-green-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5",
+          secondary: "bg-brand-navy hover:bg-slate-800 text-white border border-slate-700",
+          outline: "bg-transparent border-2 border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white"
+        };
+        return (
+          <button onClick={onClick} className={`${baseStyle} ${variants[variant]} ${className}`}>
+            {children}
+          </button>
+        );
+      };
+
+      const PersonaSpotlight = () => {
+        return (
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-12 transform hover:shadow-2xl transition-all duration-300">
+            <div className="bg-gradient-to-r from-slate-800 to-brand-navy p-6 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-white/10 rounded-full">
+                  <User className="w-8 h-8 text-brand-accent" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold">Você se sente como o Rogério?</h4>
+                  <p className="text-slate-300 text-sm">O perfil clássico do "Bombeiro Operacional"</p>
+                </div>
+              </div>
+              <div className="flex gap-2 text-xs font-bold uppercase tracking-wider">
+                <span className="bg-white/20 px-3 py-1 rounded">Comércio</span>
+                <span className="bg-brand-accent text-brand-navy px-3 py-1 rounded">Fatura R$ 350k/mês</span>
+              </div>
+            </div>
+
+            <div className="p-6 md:p-8 grid md:grid-cols-12 gap-8">
+              <div className="md:col-span-7 space-y-6">
+                <div>
+                  <h5 className="flex items-center text-lg font-bold text-slate-800 mb-3">
+                    <Clock className="w-5 h-5 text-red-500 mr-2" />
+                    A Rotina de Incêndios
+                  </h5>
+                  <p className="text-slate-600 leading-relaxed">
+                    Rogério chega às 07:30 e sai às 20:00. Ele não gerencia a empresa; ele apaga incêndios. 
+                    É o fornecedor cobrando boleto esquecido, o cliente pedindo desconto que só ele pode dar.
+                    Ele aprova pagamentos no celular <strong>sem conferir.</strong>
+                  </p>
+                </div>
+                <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+                  <h6 className="text-red-800 font-bold text-sm mb-1 flex items-center">
+                    <HeartCrack className="w-4 h-4 mr-2"/>
+                    Estado Emocional: Exaustão Crônica
+                  </h6>
+                  <p className="text-red-700 text-sm italic">
+                    "Tenho a sensação constante de que estou sendo roubado ou de que o dinheiro sumiu. 
+                    Vendemos R$ 350 mil, mas a conta vive no vermelho."
+                  </p>
+                </div>
+              </div>
+
+              <div className="md:col-span-5 flex flex-col justify-between bg-slate-50 p-6 rounded-xl border border-slate-100">
+                <div className="space-y-4">
+                  <h5 className="font-bold text-brand-navy border-b border-slate-200 pb-2">O que tira o sono dele?</h5>
+                  <ul className="space-y-3">
+                    <li className="flex items-start text-sm text-slate-700">
+                      <span className="text-red-500 mr-2 font-bold">✕</span> Medo de quebrar por falta de caixa surpresa.
+                    </li>
+                    <li className="flex items-start text-sm text-slate-700">
+                      <span className="text-red-500 mr-2 font-bold">✕</span> Vergonha de não saber responder "quanto lucrou".
+                    </li>
+                  </ul>
+                </div>
+                <div className="mt-8 pt-6 border-t border-slate-200">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-6 h-6 text-brand-green flex-shrink-0" />
+                    <p className="text-brand-green font-bold text-sm">
+                      "Quero recuperar minha vida pessoal e ter a segurança de que as contas estão pagas."
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const ROICalculator = () => {
+        const [revenue, setRevenue] = useState(100000);
+        const [pricingError, setPricingError] = useState(5);
+        const [stockLoss, setStockLoss] = useState(2);
+
+        const pricingLoss = revenue * (pricingError / 100);
+        const stockLossVal = revenue * (stockLoss / 100);
+        
+        const totalMonthlyLoss = pricingLoss + stockLossVal;
+        const totalAnnualLoss = totalMonthlyLoss * 12;
+        const investment = 12000;
+        const roiMultiplier = (totalAnnualLoss / investment).toFixed(1);
+
+        return (
+          <div className="bg-white p-6 rounded-xl shadow-xl border border-slate-200">
+            <h3 className="text-2xl font-bold text-brand-navy mb-6">Calculadora de Perda Invisível</h3>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-600 mb-1">Faturamento Mensal (R$)</label>
+                  <input 
+                    type="number" 
+                    value={revenue} 
+                    onChange={(e) => setRevenue(Number(e.target.value))}
+                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-600 mb-1">Erro de Precificação (%)</label>
+                  <input type="range" min="0" max="20" value={pricingError} onChange={(e) => setPricingError(Number(e.target.value))} className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-blue"/>
+                  <div className="text-right font-bold text-brand-blue">{pricingError}%</div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-600 mb-1">Perda de Estoque (%)</label>
+                  <input type="range" min="0" max="10" value={stockLoss} onChange={(e) => setStockLoss(Number(e.target.value))} className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-blue"/>
+                  <div className="text-right font-bold text-brand-blue">{stockLoss}%</div>
+                </div>
+              </div>
+              
+              <div className="bg-slate-50 p-6 rounded-lg space-y-4">
+                <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+                  <span className="text-slate-600">Perda Mensal:</span>
+                  <span className="text-xl font-bold text-red-600">- R$ {totalMonthlyLoss.toLocaleString('pt-BR')}</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+                  <span className="text-slate-600">Perda Anual:</span>
+                  <span className="text-xl font-bold text-red-600">- R$ {totalAnnualLoss.toLocaleString('pt-BR')}</span>
+                </div>
+                <div className="mt-4 pt-4 border-t border-slate-200">
+                  <p className="text-sm text-center text-slate-500 mb-2">Seu ROI Potencial:</p>
+                  <div className="text-center bg-brand-green/10 text-brand-green py-2 rounded font-bold text-2xl">
+                    {roiMultiplier}x em um ano
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const Checklist = () => {
+        const [score, setScore] = useState(0);
+        const [checkedState, setCheckedState] = useState(new Array(CHECKLIST_ITEMS.length).fill(false));
+        const [showResult, setShowResult] = useState(false);
+
+        const handleOnChange = (position) => {
+          const updatedCheckedState = checkedState.map((item, index) => index === position ? !item : item);
+          setCheckedState(updatedCheckedState);
+          setScore(updatedCheckedState.reduce((sum, current) => sum + (current ? 1 : 0), 0));
+        };
+
+        const getResult = () => {
+          if (score <= 3) return { text: "Crítico: Sua empresa está vulnerável.", color: "text-red-600" };
+          if (score <= 7) return { text: "Alerta: Você tem controles parciais.", color: "text-orange-500" };
+          return { text: "Maduro: Boa gestão, refine a governança.", color: "text-green-600" };
+        };
+
+        return (
+          <div className="bg-white p-6 md:p-8 rounded-xl shadow-md border border-slate-200">
+            <h3 className="text-xl font-bold mb-6 text-brand-navy">Autoavaliação Rápida</h3>
+            <div className="space-y-3 mb-6">
+              {CHECKLIST_ITEMS.map((item, index) => (
+                <div key={index} className="flex items-start">
+                  <input type="checkbox" checked={checkedState[index]} onChange={() => handleOnChange(index)} className="mt-1 w-5 h-5 accent-brand-blue cursor-pointer"/>
+                  <label onClick={() => handleOnChange(index)} className="ml-3 text-slate-700 text-sm md:text-base cursor-pointer select-none">{item}</label>
+                </div>
+              ))}
+            </div>
+            {!showResult ? (
+              <button onClick={() => setShowResult(true)} className="w-full py-3 bg-brand-blue text-white rounded-lg font-bold hover:bg-blue-800 transition">Ver Resultado</button>
+            ) : (
+              <div className="bg-slate-100 p-4 rounded-lg text-center animate-fade-in">
+                <p className="text-lg font-bold text-brand-navy mb-1">Pontuação: {score}/10</p>
+                <p className={`font-semibold ${getResult().color}`}>{getResult().text}</p>
+              </div>
+            )}
+          </div>
+        );
+      };
+
+      const ReportCard = ({ title, desc, bullets, imageName, imagePath }) => {
+        const storageKey = `gfp_report_image_${title.replace(/\s+/g, '_').toLowerCase()}`;
+        const [imgSrc, setImgSrc] = useState(localStorage.getItem(storageKey) || imagePath);
+        const [hasError, setHasError] = useState(false);
+        const fileInputRef = useRef(null);
+
+        const handleFileChange = (e) => {
+          const file = e.target.files?.[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const res = e.target.result;
+              try { localStorage.setItem(storageKey, res); setImgSrc(res); setHasError(false); } 
+              catch { setImgSrc(res); setHasError(false); }
+            };
+            reader.readAsDataURL(file);
+          }
+        };
+
+        return (
+          <div className="group relative bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200 flex flex-col h-full">
+            <div className="aspect-video bg-slate-800 relative flex items-center justify-center overflow-hidden cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+              {!hasError ? (
+                <img src={imgSrc} onError={() => setHasError(true)} className="object-cover w-full h-full opacity-90 group-hover:opacity-100 transition-opacity" />
+              ) : (
+                <div className="text-center p-4 text-slate-400 flex flex-col items-center">
+                  <Upload className="w-6 h-6 mb-2" />
+                  <p className="text-xs font-bold uppercase">Imagem não encontrada</p>
+                  <p className="text-xs text-slate-500">Clique para carregar: <span className="font-mono text-brand-accent">{imageName}</span></p>
+                </div>
+              )}
+              <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*"/>
+              <div className="absolute bottom-3 left-4 pointer-events-none">
+                <span className="bg-brand-accent text-brand-navy px-3 py-1 rounded text-xs font-bold uppercase shadow-sm">Relatório Real</span>
+              </div>
+            </div>
+            <div className="p-6 flex-1 flex flex-col">
+              <h4 className="text-xl font-bold text-brand-navy mb-2">{title}</h4>
+              <p className="text-sm text-brand-blue font-medium mb-4">{desc}</p>
+              <ul className="space-y-2 mt-auto">
+                {bullets.map((b, i) => <li key={i} className="flex items-start text-sm text-slate-600"><CheckCircle className="w-4 h-4 text-brand-green mr-2 mt-0.5 flex-shrink-0" />{b}</li>)}
+              </ul>
+            </div>
+          </div>
+        );
+      };
+
+      const FeedbackSection = () => (
+        <div className="grid md:grid-cols-3 gap-8">
+          {FEEDBACKS.map((item) => (
+            <div key={item.id} className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden flex flex-col h-full transform hover:-translate-y-1 transition duration-300">
+              {/* Card de Vídeo Interativo (Resolve Erro 153/Restrição de Embed) */}
+              <a 
+                href={`https://www.youtube.com/shorts/${item.youtubeId}`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block relative aspect-[9/16] bg-slate-900 group cursor-pointer"
+              >
+                 <img 
+                    src={`https://img.youtube.com/vi/${item.youtubeId}/hqdefault.jpg`} 
+                    alt={`Depoimento ${item.name}`}
+                    className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition duration-300"
+                 />
+                 <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+                    <div className="w-16 h-16 bg-brand-accent/90 rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition duration-300">
+                        <Play className="w-8 h-8 text-brand-navy fill-current ml-1" />
+                    </div>
+                    <span className="mt-4 font-bold text-sm bg-black/50 px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">Assistir no YouTube</span>
+                 </div>
+              </a>
+              <div className="p-6 flex-1 flex flex-col bg-white relative z-10">
+                <p className="text-slate-600 italic text-sm mb-4">"{item.quote}"</p>
+                <div className="mt-auto flex items-center gap-3 pt-4 border-t border-slate-100">
+                  <div className="w-10 h-10 rounded-full bg-brand-navy flex items-center justify-center text-white font-bold text-sm shrink-0">{item.name.charAt(0)}</div>
+                  <div>
+                    <p className="font-bold text-sm text-brand-navy leading-tight">{item.name}</p>
+                    <p className="text-xs text-slate-500 leading-tight">{item.role}, {item.company}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+
+      const SectionHeader = ({ title, subtitle }) => (
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-brand-navy mb-4 tracking-tight">{title}</h2>
+          {subtitle && <p className="text-lg text-slate-600">{subtitle}</p>}
+          <div className="w-24 h-1 bg-brand-accent mx-auto mt-6"></div>
+        </div>
+      );
+
+      // --- APP ---
+
+      const App = () => {
+        const [isMenuOpen, setIsMenuOpen] = useState(false);
+        const [activeTab, setActiveTab] = useState(0);
+        const [viewMode, setViewMode] = useState('long');
+
+        const scrollTo = (id) => {
+          const element = document.getElementById(id);
+          if (element) element.scrollIntoView({ behavior: 'smooth' });
+          setIsMenuOpen(false);
+        };
+
+        const REPORTS = [
+          { title: "Balancete & DRE Gerencial", imageName: "Print DRE Balancete", imagePath: "https://i.imgur.com/RUbHE6g.jpeg", desc: "A verdade financeira nua e crua.", bullets: ["Estrutura vertical Receitas x Despesas", "Visão do Resultado Operacional", "Evolução mensal comparativa"] },
+          { title: "Dashboard de Vendas", imageName: "Print Venda Mensal", imagePath: "https://i.imgur.com/Duu7KyT.jpeg", desc: "Pulso diário da operação.", bullets: ["Metas em tempo real", "Curva de vendas diária", "Top SKUs mais vendidos"] },
+          { title: "Novos vs Recorrentes", imageName: "Print Novos x Recorrentes", imagePath: "https://i.imgur.com/6TRapvF.png", desc: "Máquina de crescimento.", bullets: ["Ticket médio por perfil", "Share de clientes novos", "Análise de LTV"] },
+          { title: "Curva ABC Estratégica", imageName: "Print Curva ABC", imagePath: "https://i.imgur.com/WvVQu3j.png", desc: "Foque no que gera 80% do resultado.", bullets: ["Classificação A, B, C", "Visão por Clientes/Produtos", "Dependência de carteira"] },
+          { title: "Previsão de Estoque", imageName: "Print Previsão Estoque", imagePath: "https://i.imgur.com/0rpO2jt.jpeg", desc: "Otimize capital de giro.", bullets: ["Cálculo dias de estoque", "Alerta de ruptura", "Sugestão de compra"] },
+          { title: "Performance Time", imageName: "Print Performance Time", imagePath: "https://i.imgur.com/4HdIWtU.png", desc: "Gestão de pessoas com dados.", bullets: ["Ranking de vendas/lucro", "Evolução individual", "Ticket médio por vendedor"] }
+        ];
+
+        return (
+          <div className="font-sans text-slate-800">
+            {/* Header */}
+            <nav className="fixed w-full z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm">
+              <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+                <div className="font-bold text-xl tracking-tight text-brand-navy cursor-pointer" onClick={() => window.scrollTo(0,0)}>
+                  Gestão Financeira <span className="text-brand-blue">PRO</span>
+                </div>
+                <div className="hidden md:flex space-x-6 text-sm font-medium text-slate-600">
+                  <button onClick={() => scrollTo('cenario')} className="hover:text-brand-blue">Cenário</button>
+                  <button onClick={() => scrollTo('para-quem')} className="hover:text-brand-blue">Para Quem</button>
+                  <button onClick={() => scrollTo('modulos')} className="hover:text-brand-blue">Módulos</button>
+                  <button onClick={() => scrollTo('roi')} className="hover:text-brand-blue">ROI</button>
+                </div>
+                <div className="hidden md:block">
+                  <Button variant="primary" className="!px-4 !py-2 !text-sm" onClick={() => scrollTo('contato')}>Agendar Diagnóstico</Button>
+                </div>
+                <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                  {isMenuOpen ? <X /> : <Menu />}
+                </button>
+              </div>
+              {isMenuOpen && (
+                <div className="md:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-4">
+                   <button onClick={() => scrollTo('cenario')} className="block w-full text-left py-2">Cenário</button>
+                   <button onClick={() => scrollTo('modulos')} className="block w-full text-left py-2">Módulos</button>
+                   <button onClick={() => scrollTo('roi')} className="block w-full text-left py-2">ROI</button>
+                   <Button variant="primary" className="w-full !py-3" onClick={() => scrollTo('contato')}>Agendar Diagnóstico</Button>
+                </div>
+              )}
+            </nav>
+
+            {/* View Mode */}
+            <div className="fixed bottom-20 right-4 z-40 bg-slate-800 text-white p-2 rounded text-xs opacity-50 hover:opacity-100 transition">
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input type="checkbox" checked={viewMode === 'lean'} onChange={() => setViewMode(viewMode === 'long' ? 'lean' : 'long')} />
+                <span>Modo Resumido</span>
+              </label>
+            </div>
+
+            {/* Hero */}
+            <header className="pt-32 pb-20 bg-gradient-to-br from-slate-50 to-blue-50/50">
+              <div className="container mx-auto px-4 text-center max-w-5xl">
+                <h1 className="text-4xl md:text-6xl font-extrabold text-brand-navy mb-6 leading-tight">
+                  Gestão Financeira PRO <br/>
+                  <span className="text-brand-blue">Do Caos ao Controle em 16 Semanas</span>
+                </h1>
+                <p className="text-xl md:text-2xl text-slate-600 mb-8 max-w-3xl mx-auto font-light">
+                  Não é um curso. É uma <strong>Mentoria de Implementação Assistida</strong>.
+                  Saia com seu departamento financeiro rodando, processos instalados e caixa previsível.
+                </p>
+                <div className="flex flex-col md:flex-row justify-center gap-4 mb-12">
+                  <Button variant="primary" onClick={() => scrollTo('contato')}>Agendar Diagnóstico Gratuito</Button>
+                  <Button variant="outline" onClick={() => scrollTo('como-funciona')}>Aplicar para a Turma</Button>
+                </div>
+              </div>
+            </header>
+
+            {/* Scenario */}
+            <section id="cenario" className="py-20 bg-white">
+              <div className="container mx-auto px-4">
+                <SectionHeader title="O Cenário Brasil 2024" subtitle="Dados da Serasa Experian mostram que não é só você." />
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
+                  {[
+                    { val: "6,9 Milhões", label: "Inadimplentes" }, { val: "31,6%", label: "Das ativas" },
+                    { val: "+300 Mil", label: "Novas vs ano anterior" }, { val: "R$ 150 Bi", label: "Dívidas" },
+                    { val: "R$ 21k", label: "Ticket médio" }, { val: "Serviços", label: "31% das inadimplentes" },
+                  ].map((stat, i) => (
+                    <div key={i} className="bg-slate-50 p-4 rounded-lg text-center border border-slate-100">
+                      <div className="text-xl md:text-2xl font-bold text-red-600 mb-1">{stat.val}</div>
+                      <div className="text-xs text-slate-500 font-medium uppercase">{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="bg-brand-navy text-white p-8 rounded-xl text-center max-w-3xl mx-auto">
+                  <p className="text-lg">"Não é apenas falta de vendas. É falta de gestão de caixa."</p>
+                </div>
+              </div>
+            </section>
+
+            {/* Personas & ICP */}
+            {viewMode === 'long' && (
+              <section className="py-20 bg-slate-50">
+                <div className="container mx-auto px-4">
+                  <div id="para-quem" className="grid md:grid-cols-3 gap-8 mb-16">
+                    {CLUSTERS.map((cluster, i) => (
+                      <div key={i} className="bg-white p-8 rounded-xl shadow-md border-t-4 border-brand-blue hover:shadow-xl transition-shadow">
+                        <h3 className="text-xl font-bold text-brand-navy mb-2">{cluster.name}</h3>
+                        <div className="text-sm font-semibold text-brand-blue mb-4 bg-blue-50 inline-block px-2 py-1 rounded">{cluster.range}</div>
+                        <p className="text-slate-600">{cluster.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+                    <div>
+                      <h3 className="text-2xl font-bold text-brand-navy mb-6">A Síndrome do "Empresário Operacional"</h3>
+                      <p className="text-slate-600 mb-4">Você é um excelente técnico, mas negligenciou a gestão administrativa.</p>
+                      <Checklist />
+                    </div>
+                    <div><PersonaSpotlight /></div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* How it Works */}
+            <section id="como-funciona" className="py-20 bg-brand-navy text-white">
+              <div className="container mx-auto px-4">
+                 <div className="grid md:grid-cols-2 gap-12 items-center">
+                   <div>
+                     <h2 className="text-3xl font-bold mb-6">A Transformação</h2>
+                     <p className="text-slate-300 mb-8 text-lg">Mentoria de Implementação Assistida. Instalamos a infraestrutura.</p>
+                     <div className="space-y-6">
+                       <div className="flex"><div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center font-bold text-xl mr-4 shrink-0">1</div><div><h4 className="font-bold text-lg">16 Semanas</h4></div></div>
+                       <div className="flex"><div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center font-bold text-xl mr-4 shrink-0">2</div><div><h4 className="font-bold text-lg">Encontros Ao Vivo</h4></div></div>
+                       <div className="flex"><div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center font-bold text-xl mr-4 shrink-0">3</div><div><h4 className="font-bold text-lg">Turmas Pequenas</h4></div></div>
+                     </div>
+                   </div>
+                   <div className="relative bg-white text-slate-800 rounded-xl p-8 shadow-2xl">
+                      <h3 className="text-center font-bold text-xl mb-8">Os 3 Pilares Integrados</h3>
+                      <div className="flex flex-col items-center gap-4">
+                        <div className="p-4 bg-blue-100 rounded-lg w-full text-center border-l-4 border-blue-500 font-bold">COMPRAS</div>
+                        <ArrowRight className="rotate-90 text-slate-400" />
+                        <div className="p-4 bg-orange-100 rounded-lg w-full text-center border-l-4 border-orange-500 font-bold">ESTOQUE</div>
+                        <ArrowRight className="rotate-90 text-slate-400" />
+                        <div className="p-4 bg-green-100 rounded-lg w-full text-center border-l-4 border-green-500 font-bold">FINANÇAS</div>
+                      </div>
+                   </div>
+                 </div>
+              </div>
+            </section>
+
+            {/* Modules */}
+            <section id="modulos" className="py-20 bg-slate-50">
+              <div className="container mx-auto px-4">
+                <SectionHeader title="Jornada de Implementação" subtitle="Passo a passo do que será executado." />
+                {viewMode === 'lean' ? (
+                   <div className="grid md:grid-cols-4 gap-4">
+                     {MODULES.map((mod) => (
+                       <div key={mod.id} className="bg-white p-6 rounded-lg shadow border border-slate-100">
+                         <h4 className="font-bold text-brand-blue mb-2">{mod.title}</h4>
+                         <ul className="text-xs text-slate-600 space-y-2">{mod.weeks.map(w => <li key={w.week}>Sem {w.week}: {w.title}</li>)}</ul>
+                       </div>
+                     ))}
+                   </div>
+                ) : (
+                  <div className="space-y-6 max-w-4xl mx-auto">
+                    <div className="flex justify-center space-x-2 mb-8 overflow-x-auto pb-2">
+                      {MODULES.map((mod, index) => (
+                        <button key={mod.id} onClick={() => setActiveTab(index)} className={`px-6 py-2 rounded-full font-bold whitespace-nowrap transition ${activeTab === index ? 'bg-brand-blue text-white shadow-lg' : 'bg-white text-slate-600 hover:bg-slate-100'}`}>
+                          {mod.title.split(':')[0]}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
+                      <h3 className="text-xl font-bold text-brand-navy mb-4">{MODULES[activeTab].title}</h3>
+                      <div className="divide-y divide-slate-100">
+                        {MODULES[activeTab].weeks.map((week) => (
+                          <div key={week.week} className="py-4">
+                            <h4 className="font-bold text-slate-800">{week.title}</h4>
+                            <p className="text-sm text-slate-600">Obj: {week.objective}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+
+            {/* Reports */}
+            <section className="py-20 bg-white">
+              <div className="container mx-auto px-4">
+                <SectionHeader title="O Hub de Ferramentas" subtitle="Você não sai de mãos abanando." />
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                  {REPORTS.map((report, idx) => <ReportCard key={idx} {...report} />)}
+                </div>
+              </div>
+            </section>
+
+             {/* Feedbacks */}
+            <section className="py-20 bg-slate-50">
+              <div className="container mx-auto px-4">
+                <SectionHeader title="Resultados Reais" />
+                <div className="max-w-6xl mx-auto"><FeedbackSection /></div>
+              </div>
+            </section>
+
+            {/* ROI */}
+            <section id="roi" className="py-20 bg-blue-50">
+              <div className="container mx-auto px-4">
+                <SectionHeader title="Custo ou Investimento?" subtitle="Calcule quanto a desorganização custa hoje." />
+                <div className="max-w-4xl mx-auto mb-12"><ROICalculator /></div>
+              </div>
+            </section>
+
+            {/* FAQ */}
+            <section className="py-20 bg-white">
+              <div className="container mx-auto px-4 max-w-3xl">
+                <SectionHeader title="Perguntas Frequentes" />
+                <div className="space-y-4">
+                  {FAQS.map((faq, i) => (
+                     <details key={i} className="group bg-slate-50 rounded-lg border border-slate-200 open:border-brand-blue">
+                       <summary className="flex cursor-pointer items-center justify-between p-6 font-bold text-slate-700">{faq.question} <ArrowRight className="w-4 h-4 group-open:rotate-90 transition"/></summary>
+                       <div className="px-6 pb-6 text-slate-600 text-sm">{faq.answer}</div>
+                     </details>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* Pricing */}
+            <section id="contato" className="py-20 bg-brand-navy text-white text-center">
+              <div className="container mx-auto px-4">
+                <h2 className="text-3xl md:text-5xl font-bold mb-6">Investimento e Próximos Passos</h2>
+                <div className="bg-white text-slate-800 max-w-lg mx-auto rounded-2xl p-8 shadow-2xl mb-12 transform hover:scale-105 transition duration-300">
+                  <div className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-2">Turma com 15 Vagas</div>
+                  <div className="text-5xl font-extrabold text-brand-navy mb-2">R$ 12.000</div>
+                  <p className="text-slate-500 text-sm mb-6">Ou parcelado conforme negociação.</p>
+                  <Button variant="primary" className="w-full text-lg">Agendar Diagnóstico</Button>
+                </div>
+              </div>
+            </section>
+
+            {/* Footer */}
+            <footer className="bg-slate-900 text-slate-500 py-12 text-sm text-center">
+              <div className="container mx-auto px-4">
+                <p>© {new Date().getFullYear()} Gestão Financeira PRO.</p>
+              </div>
+            </footer>
+          </div>
+        );
+      };
+
+      // Inicialização do React
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+  </body>
+</html>

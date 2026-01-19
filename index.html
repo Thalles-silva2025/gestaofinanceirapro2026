@@ -83,7 +83,11 @@
         Briefcase = () => <span>💼</span>, 
         Activity = () => <span>⚡</span>, 
         HeartCrack = () => <span>💔</span>, 
-        Play = () => <span>▶</span> 
+        Play = () => <span>▶</span>,
+        BookOpen = () => <span>📖</span>,
+        Wrench = () => <span>🔧</span>,
+        ZoomIn = () => <span>🔍</span>,
+        FileWarning = () => <span>⚠</span>
       } = Icons;
 
       // --- DADOS ---
@@ -110,40 +114,225 @@
           id: "A",
           title: "Módulo A: Estruturação (Semanas 1-4)",
           weeks: [
-            { week: 1, title: "Diagnóstico e Mentalidade", objective: "Quebrar a inércia e separar contas.", deliverable: "Inventário de dívidas e custos.", practice: "Separação total PF/PJ e definição de pró-labore." },
-            { week: 2, title: "Setup do ERP Gerencial", objective: "Configurar o sistema para gerar dados.", deliverable: "Plano de contas gerencial.", practice: "Parametrização correta para relatórios automáticos." },
-            { week: 3, title: "Taxonomia de Produtos", objective: "Preparar a base para gestão de estoque.", deliverable: "Grupos e famílias padronizados.", practice: "Limpeza da base de cadastro." },
-            { week: 4, title: "Precificação Estratégica", objective: "Garantir lucro na venda.", deliverable: "Regras de precificação e margem.", practice: "Cálculo de Markup vs Margem." }
+            { 
+              week: 1, 
+              title: "Diagnóstico e Mentalidade", 
+              objective: "Quebrar a inércia e estabelecer a governança básica.", 
+              topics: [
+                "Diferença vital: Regime de Caixa (Liquidez) vs Competência (Lucro).",
+                "Conceito de Entidade: O perigo da mistura patrimonial."
+              ],
+              actions: [
+                "Abertura de contas bancárias PJ exclusivas.",
+                "Definição de Pró-labore e eliminação de retiradas aleatórias.",
+                "Inventário das dívidas e custos fixos atuais."
+              ]
+            },
+            { 
+              week: 2, 
+              title: "Setup do ERP Gerencial", 
+              objective: "Implementar o sistema para gerar dados confiáveis.", 
+              topics: [
+                "Plano de Contas Gerencial (Árvore de Categorias).",
+                "Configuração de Centro de Custos (Filiais/Linhas de Receita).",
+                "Parametrização Fiscal para automação."
+              ],
+              actions: [
+                "ERP parametrizado e pronto para lançamentos."
+              ]
+            },
+            { 
+              week: 3, 
+              title: "Taxonomia de Produtos", 
+              objective: "Preparar a base para gestão de estoque e margem.", 
+              topics: [
+                "Padronização de nomenclatura (evitar duplicidades).",
+                "Classificação de Grupos e Famílias (prep. Curva ABC).",
+                "Revisão dos custos de aquisição cadastrados."
+              ],
+              actions: [
+                "Limpeza e organização da base de cadastro de produtos."
+              ]
+            },
+            { 
+              week: 4, 
+              title: "Precificação Estratégica", 
+              objective: "Garantir que cada venda contribua positivamente.", 
+              topics: [
+                "Markup vs. Margem: A fórmula correta de precificação.",
+                "Cálculo do Ponto de Equilíbrio (Break-even).",
+                "Configuração de regras de preço no ERP."
+              ],
+              actions: [
+                "Tabela de preços revisada com margem real."
+              ]
+            }
           ]
         },
         {
           id: "B",
           title: "Módulo B: Controle (Semanas 5-8)",
           weeks: [
-            { week: 5, title: "Contas a Pagar/Receber", objective: "Blindar o caixa.", deliverable: "Régua de cobrança.", practice: "Agendamento e provisionamento." },
-            { week: 6, title: "Gestão de Compras", objective: "Transformar compras em lucro.", deliverable: "Fluxo de cotação e aprovação.", practice: "Definição de alçadas e PMP." },
-            { week: 7, title: "Recebimento e Conferência", objective: "Integridade físico x sistema.", deliverable: "Protocolo de confronto cego.", practice: "Processo de devolução." },
-            { week: 8, title: "Conciliação Bancária", objective: "A verdade dos números.", deliverable: "Fechamento de caixa diário.", practice: "Bater banco x ERP centavo por centavo." }
+            { 
+              week: 5, 
+              title: "Contas a Pagar/Receber", 
+              objective: "Blindar o caixa contra multas e inadimplência.", 
+              topics: [
+                "O Ritual Diário e horários de corte.",
+                "Agendamento e Provisionamento de despesas futuras.",
+                "Régua de Cobrança automatizada (E-mail, SMS, WhatsApp, Protesto)."
+              ],
+              actions: [
+                "Implementação da rotina de contas a receber e pagar."
+              ]
+            },
+            { 
+              week: 6, 
+              title: "Gestão de Compras", 
+              objective: "Transformar Compras em um centro de lucro.", 
+              topics: [
+                "Fluxograma: Requisição > Cotação > Aprovação > Pedido.",
+                "Definição de Alçadas de Aprovação por valor.",
+                "Estratégia de Prazo Médio de Pagamento (PMP)."
+              ],
+              actions: [
+                "Processo de compras estruturado com alçadas."
+              ]
+            },
+            { 
+              week: 7, 
+              title: "Recebimento e Conferência", 
+              objective: "Garantir integridade do estoque e financeiro.", 
+              topics: [
+                "Confronto Cego (Físico vs Pedido).",
+                "Validação XML da Nota Fiscal.",
+                "Protocolo de rejeição de divergências."
+              ],
+              actions: [
+                "Barreira fiscal de entrada implementada."
+              ]
+            },
+            { 
+              week: 8, 
+              title: "Conciliação Bancária", 
+              objective: "A verdade absoluta dos números.", 
+              topics: [
+                "Importância da conciliação diária (centavo por centavo).",
+                "Tratamento de tarifas e aplicações financeiras."
+              ],
+              actions: [
+                "Fechamento de caixa diário batendo com o banco."
+              ]
+            }
           ]
         },
         {
           id: "C",
           title: "Módulo C: Acompanhamento (Semanas 9-12)",
           weeks: [
-            { week: 9, title: "Fluxo de Caixa 13 Semanas", objective: "Previsibilidade.", deliverable: "Visão de Fluxo Projetado.", practice: "Implementação da visão curto prazo." },
-            { week: 10, title: "Go Live + Rotinas", objective: "Virada operacional.", deliverable: "Checklist de rotinas.", practice: "Equipe rodando processos sozinhos." },
-            { week: 11, title: "Previsto x Realizado", objective: "Identificar gargalos.", deliverable: "Relatório de desvios.", practice: "Investigação de causa raiz." },
-            { week: 12, title: "Rolling Forecast", objective: "Correção de rota.", deliverable: "Plano de ação.", practice: "Atualização semanal das projeções." }
+            { 
+              week: 9, 
+              title: "Fluxo de Caixa 13 Semanas", 
+              objective: "Previsibilidade para navegar em águas turbulentas.", 
+              topics: [
+                "Metodologia de Fluxo de Caixa Projetado (Curto Prazo).",
+                "Estrutura: Saldo Inicial + Entradas - Saídas = Saldo Projetado."
+              ],
+              actions: [
+                "Ferramenta de Fluxo de 13 Semanas implementada."
+              ]
+            },
+            { 
+              week: 10, 
+              title: "Go Live + Rotinas", 
+              objective: "Virada de chave operacional.", 
+              topics: [
+                "Virada oficial dos processos.",
+                "Fim do 'apagar incêndios', início da gestão de rotina."
+              ],
+              actions: [
+                "Checklist de Rotinas (Diária, Semanal, Mensal) entregue à equipe."
+              ]
+            },
+            { 
+              week: 11, 
+              title: "Monitoramento (Semana 1)", 
+              objective: "Auditoria e ajuste fino.", 
+              topics: [
+                "Análise real: Previsto vs Realizado.",
+                "Identificação de gargalos de caixa e causas raízes."
+              ],
+              actions: [
+                "Relatório de desvios e correções imediatas."
+              ]
+            },
+            { 
+              week: 12, 
+              title: "Correção de Rota", 
+              objective: "Consolidação do hábito de análise.", 
+              topics: [
+                "Atualização do Rolling Forecast.",
+                "Planos de ação para projeção de caixa negativo."
+              ],
+              actions: [
+                "Planejamento de antecipação ou corte de custos se necessário."
+              ]
+            }
           ]
         },
         {
           id: "D",
           title: "Módulo D: Estoque e Relatórios (Semanas 13-16)",
           weeks: [
-            { week: 13, title: "Gestão de Estoque", objective: "Otimização capital de giro.", deliverable: "Curva ABC e Giro.", practice: "Identificação de estoque obsoleto." },
-            { week: 14, title: "DRE Gerencial", objective: "'Minha empresa dá lucro?'", deliverable: "DRE estruturado.", practice: "Análise vertical e horizontal." },
-            { week: 15, title: "DRE vs Fluxo de Caixa", objective: "Efeito Tesoura.", deliverable: "Diagnóstico Lucro x Caixa.", practice: "Análise de Capital de Giro." },
-            { week: 16, title: "Governança e KPIs", objective: "Gestão estratégica.", deliverable: "Painel de Indicadores.", practice: "Reunião Mensal de Resultados." }
+            { 
+              week: 13, 
+              title: "Gestão de Estoque (ABC)", 
+              objective: "Otimização do capital de giro.", 
+              topics: [
+                "Aplicação da Curva ABC (80/20).",
+                "Estratégias diferenciadas para Classe A vs Classe C.",
+                "Análise de Giro de Estoque e Cobertura."
+              ],
+              actions: [
+                "Relatório de Curva ABC e plano para estoque obsoleto."
+              ]
+            },
+            { 
+              week: 14, 
+              title: "DRE Gerencial", 
+              objective: "Responder: 'Minha empresa dá lucro?'", 
+              topics: [
+                "Estrutura DRE: Margem de Contribuição, EBITDA, Lucro Líquido.",
+                "Análise Vertical e Horizontal."
+              ],
+              actions: [
+                "Primeira DRE Gerencial confiável gerada."
+              ]
+            },
+            { 
+              week: 15, 
+              title: "DRE vs Fluxo de Caixa", 
+              objective: "Visão 360º e o Efeito Tesoura.", 
+              topics: [
+                "Discrepância entre Lucro (Econômico) e Caixa (Financeiro).",
+                "Diagnóstico do Efeito Tesoura (Crescimento que quebra)."
+              ],
+              actions: [
+                "Análise de necessidade de Capital de Giro."
+              ]
+            },
+            { 
+              week: 16, 
+              title: "Governança e KPIs", 
+              objective: "Institucionalizar a gestão estratégica.", 
+              topics: [
+                "Estruturação da Reunião Mensal de Resultados.",
+                "Definição de metas orçamentárias."
+              ],
+              actions: [
+                "Entrega do certificado e painel de indicadores final."
+              ]
+            }
           ]
         }
       ];
@@ -212,6 +401,94 @@
           </button>
         );
       };
+
+      const Modal = ({ content, onClose }) => {
+        // CORREÇÃO: useEffect movido para o topo, antes de qualquer retorno condicional
+        useEffect(() => {
+          const handleEsc = (e) => {
+            if (e.key === 'Escape') onClose();
+          };
+          window.addEventListener('keydown', handleEsc);
+          return () => window.removeEventListener('keydown', handleEsc);
+        }, [onClose]);
+
+        if (!content) return null;
+
+        // Simplificado: Modal agora apenas para imagens e conteúdo estático visual
+        return (
+          <div 
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-brand-navy/95 backdrop-blur-md p-4 animate-fade-in"
+            onClick={onClose}
+          >
+            <button 
+              onClick={onClose}
+              className="absolute top-4 right-4 md:top-8 md:right-8 text-white/70 hover:text-white transition-colors p-2 bg-black/20 rounded-full"
+            >
+              <X size={40} />
+            </button>
+
+            <div 
+              className="relative w-full max-w-6xl max-h-[90vh] flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative group">
+                <img 
+                  src={content.src} 
+                  alt="Ampliado" 
+                  className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl border border-white/10"
+                />
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                  {content.title}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const TaxReformAlert = () => (
+        <div className="bg-brand-accent/10 border-l-4 border-brand-accent p-6 md:p-8 rounded-r-xl my-12 mx-auto max-w-5xl shadow-sm">
+          <div className="flex flex-col md:flex-row items-start gap-6">
+            <div className="bg-brand-accent text-brand-navy p-3 rounded-full shrink-0 shadow-sm hidden md:block">
+              <FileWarning size={32} />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-2">
+                 <div className="md:hidden bg-brand-accent text-brand-navy p-2 rounded-full shrink-0">
+                    <FileWarning size={20} />
+                 </div>
+                 <h3 className="text-xl md:text-2xl font-bold text-brand-navy">
+                   Alerta: A Reforma Tributária não aceita amadorismo
+                 </h3>
+              </div>
+              <p className="text-slate-700 mb-6 text-base md:text-lg leading-relaxed">
+                A partir de 2026, o Brasil entra em uma nova era fiscal. O novo sistema (IVA Dual) vai exigir que sua empresa tenha <strong>gestão financeira profissional</strong> para não perder dinheiro.
+              </p>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-white p-5 rounded-lg shadow-sm border border-slate-100 hover:border-brand-accent/30 transition-colors">
+                  <strong className="flex items-center text-brand-navy mb-2">
+                    <AlertTriangle className="w-4 h-4 mr-2 text-brand-accent" />
+                    O Fim da "Conta de Padaria"
+                  </strong>
+                  <p className="text-sm text-slate-600">Com o futuro <em>Split Payment</em>, o imposto pode ser retido na hora da venda. Se seu fluxo de caixa não for projetado no detalhe, sua operação pode travar por falta de liquidez.</p>
+                </div>
+                <div className="bg-white p-5 rounded-lg shadow-sm border border-slate-100 hover:border-brand-accent/30 transition-colors">
+                  <strong className="flex items-center text-brand-navy mb-2">
+                    <ShieldCheck className="w-4 h-4 mr-2 text-brand-green" />
+                    Gestão de Créditos
+                  </strong>
+                  <p className="text-sm text-slate-600">No novo sistema de não-cumulatividade, para pagar menos imposto, você precisará provar cada compra. Sem organização de notas fiscais e estoque, sua carga tributária vai subir.</p>
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-brand-accent/20 text-center md:text-left">
+                  <p className="text-sm font-bold text-brand-navy">
+                    Não espere ser obrigado pelo governo. Organize sua gestão agora para não ser pego de surpresa.
+                  </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
 
       const PersonaSpotlight = () => {
         return (
@@ -383,38 +660,37 @@
         );
       };
 
-      const ReportCard = ({ title, desc, bullets, imageName, imagePath }) => {
-        const storageKey = `gfp_report_image_${title.replace(/\s+/g, '_').toLowerCase()}`;
-        const [imgSrc, setImgSrc] = useState(localStorage.getItem(storageKey) || imagePath);
+      const ReportCard = ({ title, desc, bullets, imageName, imagePath, onExpand }) => {
         const [hasError, setHasError] = useState(false);
-        const fileInputRef = useRef(null);
-
-        const handleFileChange = (e) => {
-          const file = e.target.files?.[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              const res = e.target.result;
-              try { localStorage.setItem(storageKey, res); setImgSrc(res); setHasError(false); } 
-              catch { setImgSrc(res); setHasError(false); }
-            };
-            reader.readAsDataURL(file);
-          }
-        };
 
         return (
           <div className="group relative bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200 flex flex-col h-full">
-            <div className="aspect-video bg-slate-800 relative flex items-center justify-center overflow-hidden cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+            <div 
+                className="aspect-video bg-slate-800 relative flex items-center justify-center overflow-hidden cursor-pointer" 
+                onClick={() => !hasError && imagePath && onExpand(imagePath, title)}
+                title="Clique para ampliar"
+            >
               {!hasError ? (
-                <img src={imgSrc} onError={() => setHasError(true)} className="object-cover w-full h-full opacity-90 group-hover:opacity-100 transition-opacity" />
+                <>
+                    <img 
+                        src={imagePath} 
+                        onError={() => setHasError(true)} 
+                        className="object-cover w-full h-full opacity-90 group-hover:opacity-100 transition-all duration-300 group-hover:scale-105" 
+                        alt={title}
+                    />
+                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <span className="bg-white/90 text-slate-900 px-4 py-2 rounded-full font-bold text-sm shadow-lg flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-all">
+                             <ZoomIn className="w-4 h-4"/> Ampliar
+                        </span>
+                    </div>
+                </>
               ) : (
                 <div className="text-center p-4 text-slate-400 flex flex-col items-center">
-                  <Upload className="w-6 h-6 mb-2" />
-                  <p className="text-xs font-bold uppercase">Imagem não encontrada</p>
-                  <p className="text-xs text-slate-500">Clique para carregar: <span className="font-mono text-brand-accent">{imageName}</span></p>
+                  <ImageIcon className="w-6 h-6 mb-2" />
+                  <p className="text-xs font-bold uppercase">Imagem indisponível</p>
                 </div>
               )}
-              <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*"/>
+              
               <div className="absolute bottom-3 left-4 pointer-events-none">
                 <span className="bg-brand-accent text-brand-navy px-3 py-1 rounded text-xs font-bold uppercase shadow-sm">Relatório Real</span>
               </div>
@@ -434,12 +710,12 @@
         <div className="grid md:grid-cols-3 gap-8">
           {FEEDBACKS.map((item) => (
             <div key={item.id} className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden flex flex-col h-full transform hover:-translate-y-1 transition duration-300">
-              {/* Card de Vídeo Interativo (Resolve Erro 153/Restrição de Embed) */}
+              {/* Card de Vídeo Interativo - Alterado para Link Externo */}
               <a 
-                href={`https://www.youtube.com/shorts/${item.youtubeId}`} 
-                target="_blank" 
+                href={`https://www.youtube.com/watch?v=${item.youtubeId}`} 
+                target="_blank"
                 rel="noopener noreferrer"
-                className="block relative aspect-[9/16] bg-slate-900 group cursor-pointer"
+                className="block w-full relative aspect-[9/16] bg-slate-900 group cursor-pointer text-left"
               >
                  <img 
                     src={`https://img.youtube.com/vi/${item.youtubeId}/hqdefault.jpg`} 
@@ -482,11 +758,24 @@
         const [isMenuOpen, setIsMenuOpen] = useState(false);
         const [activeTab, setActiveTab] = useState(0);
         const [viewMode, setViewMode] = useState('long');
+        const [modalData, setModalData] = useState(null); // { type: 'image'|'video', src: string, title?: string }
 
         const scrollTo = (id) => {
           const element = document.getElementById(id);
           if (element) element.scrollIntoView({ behavior: 'smooth' });
           setIsMenuOpen(false);
+        };
+        
+        const openWhatsApp = () => {
+            window.open("https://wa.me/556296557262?text=Quero%20saber%20mais%20sobre%20o%20Gest%C3%A3o%20Financeira%20PRO", "_blank");
+        };
+
+        const openImageModal = (src, title) => {
+          setModalData({ type: 'image', src, title });
+        };
+
+        const closeModal = () => {
+          setModalData(null);
         };
 
         const REPORTS = [
@@ -500,6 +789,9 @@
 
         return (
           <div className="font-sans text-slate-800">
+            {/* Modal Global - Renderização Condicional Corrigida */}
+            {modalData && <Modal content={modalData} onClose={closeModal} />}
+
             {/* Header */}
             <nav className="fixed w-full z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm">
               <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -574,6 +866,10 @@
                 <div className="bg-brand-navy text-white p-8 rounded-xl text-center max-w-3xl mx-auto">
                   <p className="text-lg">"Não é apenas falta de vendas. É falta de gestão de caixa."</p>
                 </div>
+                
+                {/* INSERÇÃO DO ALERTA DA REFORMA TRIBUTÁRIA */}
+                <TaxReformAlert />
+
               </div>
             </section>
 
@@ -655,9 +951,51 @@
                       <h3 className="text-xl font-bold text-brand-navy mb-4">{MODULES[activeTab].title}</h3>
                       <div className="divide-y divide-slate-100">
                         {MODULES[activeTab].weeks.map((week) => (
-                          <div key={week.week} className="py-4">
-                            <h4 className="font-bold text-slate-800">{week.title}</h4>
-                            <p className="text-sm text-slate-600">Obj: {week.objective}</p>
+                          <div key={week.week} className="py-8 group">
+                            <div className="flex flex-col md:flex-row md:items-baseline md:justify-between mb-4">
+                               <h4 className="font-bold text-slate-800 text-xl flex items-center">
+                                  <span className="bg-blue-100 text-brand-blue text-xs font-extrabold px-3 py-1 rounded-full mr-3 uppercase tracking-wider">Semana {week.week}</span>
+                                  {week.title}
+                               </h4>
+                            </div>
+                            
+                            <div className="mb-6">
+                               <p className="text-slate-600 font-medium border-l-4 border-brand-accent pl-4 italic">
+                                 <span className="font-bold text-brand-navy not-italic">Objetivo:</span> {week.objective}
+                               </p>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-6">
+                               <div className="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                                  <div className="flex items-center mb-3 text-brand-blue">
+                                     <BookOpen className="w-5 h-5 mr-2" />
+                                     <span className="text-sm font-bold uppercase tracking-wider">Fundamentos & Técnica</span>
+                                  </div>
+                                  <ul className="space-y-2">
+                                    {week.topics.map((topic, i) => (
+                                      <li key={i} className="flex items-start text-sm text-slate-700">
+                                        <span className="w-1.5 h-1.5 bg-brand-blue rounded-full mt-1.5 mr-2 shrink-0"></span>
+                                        {topic}
+                                      </li>
+                                    ))}
+                                  </ul>
+                               </div>
+                               
+                               <div className="bg-green-50/50 p-5 rounded-xl border border-green-100">
+                                  <div className="flex items-center mb-3 text-brand-green">
+                                     <Wrench className="w-5 h-5 mr-2" />
+                                     <span className="text-sm font-bold uppercase tracking-wider">Mão na Massa (Ação)</span>
+                                  </div>
+                                  <ul className="space-y-2">
+                                    {week.actions.map((action, i) => (
+                                      <li key={i} className="flex items-start text-sm text-slate-700">
+                                        <CheckCircle className="w-4 h-4 text-brand-green mt-0.5 mr-2 shrink-0" />
+                                        {action}
+                                      </li>
+                                    ))}
+                                  </ul>
+                               </div>
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -672,7 +1010,7 @@
               <div className="container mx-auto px-4">
                 <SectionHeader title="O Hub de Ferramentas" subtitle="Você não sai de mãos abanando." />
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                  {REPORTS.map((report, idx) => <ReportCard key={idx} {...report} />)}
+                  {REPORTS.map((report, idx) => <ReportCard key={idx} {...report} onExpand={openImageModal} />)}
                 </div>
               </div>
             </section>
@@ -716,7 +1054,7 @@
                   <div className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-2">Turma com 15 Vagas</div>
                   <div className="text-5xl font-extrabold text-brand-navy mb-2">R$ 12.000</div>
                   <p className="text-slate-500 text-sm mb-6">Ou parcelado conforme negociação.</p>
-                  <Button variant="primary" className="w-full text-lg">Agendar Diagnóstico</Button>
+                  <Button variant="primary" className="w-full text-lg" onClick={openWhatsApp}>Agendar Diagnóstico</Button>
                 </div>
               </div>
             </section>
